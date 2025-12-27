@@ -1,0 +1,34 @@
+{
+  "name": "text-3d-threejs",
+  "version": "2.0.0",
+  "description": "Professional 3D Particle Text System with Hand Tracking using Three.js and MediaPipe",
+  "type": "module",
+  "main": "src/core/App.js",
+  "scripts": {
+    "dev": "npx http-server . -p 8080 -c-1",
+    "start": "npx http-server . -p 8080 -c-1",
+    "build": "echo 'Build process can be added with webpack/vite if needed'"
+  },
+  "keywords": [
+    "three.js",
+    "particles",
+    "3d",
+    "hand-tracking",
+    "mediapipe",
+    "webgl",
+    "interactive"
+  ],
+  "author": "binnanee",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/text-3d-threejs.git"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+
