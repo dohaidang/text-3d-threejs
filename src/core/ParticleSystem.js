@@ -54,7 +54,7 @@ export class ParticleSystem {
             map: sprite,
             vertexColors: true,
             transparent: true,
-            opacity: 1.0,
+            opacity: 1.3, // Increased opacity for brighter particles
             blending: THREE.AdditiveBlending,
             depthWrite: false
         });
@@ -160,9 +160,10 @@ export class ParticleSystem {
                 }
             }
 
-            colors[i * 3] = tempColor.r;
-            colors[i * 3 + 1] = tempColor.g;
-            colors[i * 3 + 2] = tempColor.b;
+            // Increase color intensity for brighter particles
+            colors[i * 3] = Math.min(1.0, tempColor.r * 1.2);
+            colors[i * 3 + 1] = Math.min(1.0, tempColor.g * 1.2);
+            colors[i * 3 + 2] = Math.min(1.0, tempColor.b * 1.2);
 
             // Return force to target
             const forceX = (t.x - p.x) * CONFIG.returnSpeed;

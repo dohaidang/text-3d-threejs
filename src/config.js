@@ -46,7 +46,7 @@ export const CONFIG = {
     // Post Processing
     bloom: {
         threshold: 0.0,
-        strength: 3.5,
+        strength: 4.5, // Increased bloom strength for brighter glow
         radius: 0.85
     },
     

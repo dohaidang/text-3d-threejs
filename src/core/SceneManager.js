@@ -60,7 +60,7 @@ export class SceneManager {
             this.renderer.setSize(this.width, this.height);
             this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
             this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            this.renderer.toneMappingExposure = 1.2;
+            this.renderer.toneMappingExposure = 1.5; // Increased exposure for brighter particles
             this.container.appendChild(this.renderer.domElement);
         } catch (error) {
             throw new Error('Failed to create WebGL renderer: ' + error.message);
