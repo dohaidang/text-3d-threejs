@@ -23,8 +23,8 @@ export const CONFIG = {
     hands: {
         maxNumHands: 2,
         modelComplexity: 1,
-        minDetectionConfidence: 0.7,
-        minTrackingConfidence: 0.7
+        minDetectionConfidence: 0.6, // Lowered for faster detection
+        minTrackingConfidence: 0.6 // Lowered for faster tracking
     },
     
     // Camera
@@ -55,8 +55,8 @@ export const CONFIG = {
         handInfluenceRadius: 250,
         physicsInfluenceRadius: 50000,
         forceMultiplier: 15000,
-        fistThreshold: 0.18,
-        openThreshold: 0.30
+        fistThreshold: 0.15, // Lowered for more sensitive fist detection
+        openThreshold: 0.28 // Lowered for more sensitive open hand detection
     },
     
     // Performance

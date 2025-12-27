@@ -132,17 +132,38 @@ export class HandTracker {
         const y = -(landmarks[9].y * height - height / 2);
         this.interactionState.rightHandPos.set(x, y, 0);
 
-        // Detect hand action (fist vs open)
+        // Detect hand action (fist vs open) - improved detection
         const tip8 = landmarks[8];
+        const tip12 = landmarks[12];
+        const tip16 = landmarks[16];
+        const tip20 = landmarks[20];
         const wrist = landmarks[0];
-        const dist = Math.sqrt(
+        
+        // Calculate distance from multiple fingertips to wrist for better accuracy
+        const dist8 = Math.sqrt(
             Math.pow(tip8.x - wrist.x, 2) + 
             Math.pow(tip8.y - wrist.y, 2)
         );
+        const dist12 = Math.sqrt(
+            Math.pow(tip12.x - wrist.x, 2) + 
+            Math.pow(tip12.y - wrist.y, 2)
+        );
+        const dist16 = Math.sqrt(
+            Math.pow(tip16.x - wrist.x, 2) + 
+            Math.pow(tip16.y - wrist.y, 2)
+        );
+        const dist20 = Math.sqrt(
+            Math.pow(tip20.x - wrist.x, 2) + 
+            Math.pow(tip20.y - wrist.y, 2)
+        );
+        
+        // Average distance for more stable detection
+        const avgDist = (dist8 + dist12 + dist16 + dist20) / 4;
 
-        if (dist < CONFIG.interaction.fistThreshold) {
+        // Detect action with improved thresholds - immediate response
+        if (avgDist < CONFIG.interaction.fistThreshold) {
             this.interactionState.rightHandAction = 'fist';
-        } else if (dist > CONFIG.interaction.openThreshold) {
+        } else if (avgDist > CONFIG.interaction.openThreshold) {
             this.interactionState.rightHandAction = 'open';
         } else {
             this.interactionState.rightHandAction = 'neutral';
