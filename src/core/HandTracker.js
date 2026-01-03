@@ -223,18 +223,27 @@ export class HandTracker {
         
         const avgTipToPipDist = (distTipToPip8 + distTipToPip12 + distTipToPip16 + distTipToPip20) / 4;
         
+        // Count extended fingers (not curled)
+        const extendedFingers = 4 - curledFingers;
+        
+        // One finger (pointing): only index finger extended, others curled
+        const isOneFinger = extendedFingers === 1 && tip8.y < pip6.y && 
+                           tip12.y > pip10.y && tip16.y > pip14.y && tip20.y > pip18.y;
+        
+        // Two fingers: exactly 2 fingers extended (typically index and middle)
+        const isTwoFingers = extendedFingers === 2 && avgDist > CONFIG.interaction.openThreshold;
+        
         // Fist detection: at least 3 fingers curled AND fingertips close to PIP joints
         // OR average distance to wrist is very small
         const isFist = (curledFingers >= 3 && avgTipToPipDist < 0.08) || avgDist < CONFIG.interaction.fistThreshold;
         
-        // Open hand: most fingers extended AND average distance to wrist is large
-        const isOpen = curledFingers <= 1 && avgDist > CONFIG.interaction.openThreshold;
-        
         // Detect action with improved accuracy
         if (isFist) {
             this.interactionState.rightHandAction = 'fist';
-        } else if (isOpen) {
-            this.interactionState.rightHandAction = 'open';
+        } else if (isTwoFingers) {
+            this.interactionState.rightHandAction = 'twoFingers';
+        } else if (isOneFinger) {
+            this.interactionState.rightHandAction = 'oneFinger';
         } else {
             this.interactionState.rightHandAction = 'neutral';
         }

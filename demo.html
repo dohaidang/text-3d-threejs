@@ -273,11 +273,11 @@
         if (state.rightHandAction === 'fist') {
             rightHandEl.textContent = 'Nắm đấm: Hố đen';
             rightHandEl.className = 'hand-status active fist';
-        } else if (state.rightHandAction === 'open') {
-            rightHandEl.textContent = 'Xòe tay: Vụ nổ';
+        } else if (state.rightHandAction === 'twoFingers') {
+            rightHandEl.textContent = '2 ngón: Vụ nổ';
             rightHandEl.className = 'hand-status active open';
-        } else if (state.rightHandAction === 'neutral' && state.rightHandPos.x !== 9999) {
-            rightHandEl.textContent = 'Lướt qua: Dòng chảy';
+        } else if (state.rightHandAction === 'oneFinger') {
+            rightHandEl.textContent = '1 ngón: Dòng chảy';
             rightHandEl.className = 'hand-status active flow';
         } else {
             rightHandEl.textContent = 'Đang chờ...';

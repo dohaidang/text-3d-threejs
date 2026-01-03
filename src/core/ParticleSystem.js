@@ -196,16 +196,18 @@ export class ParticleSystem {
                         v.z -= dz * forceMagnitude * 0.08;
                         v.x += dy * 0.05; // Rotation
                         v.y -= dx * 0.05;
-                    } else if (rhAction === 'open') {
+                    } else if (rhAction === 'twoFingers') {
                         // Explosion effect
                         v.x += dx * forceMagnitude * 0.15;
                         v.y += dy * forceMagnitude * 0.15;
                         v.z += dz * forceMagnitude * 0.15 + 2;
-                    } else {
-                        // Flow effect
+                    } else if (rhAction === 'oneFinger') {
+                        // Flow effect - gentle push with one finger
                         v.x += dx * forceMagnitude * 0.02;
                         v.y += dy * forceMagnitude * 0.02;
                         v.z += dz * forceMagnitude * 0.02;
+                    } else {
+                        // Neutral - no effect
                     }
                 }
             }
