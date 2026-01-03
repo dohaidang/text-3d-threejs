@@ -67,7 +67,7 @@ export class App {
     onHandTrackingUpdate(interactionState) {
         const mode = interactionState.mode;
         
-        if (mode >= 1 && mode <= 3 && this.currentTheme !== this.THEMES[mode]) {
+        if (mode >= 1 && mode <= 5 && this.currentTheme !== this.THEMES[mode]) {
             this.currentTheme = this.THEMES[mode];
             this.particleSystem.generateTextParticles(this.currentTheme.text);
         }

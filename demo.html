@@ -117,6 +117,16 @@
             text-shadow: 0 0 10px rgba(255, 51, 136, 0.8);
         }
         
+        .hand-status.purple {
+            color: #aa00ff;
+            text-shadow: 0 0 10px rgba(170, 0, 255, 0.8);
+        }
+        
+        .hand-status.green {
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+        }
+        
         .hand-status.fist {
             color: #ff0066;
             text-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
@@ -247,6 +257,12 @@
         } else if (state.mode === 3) {
             leftHandEl.textContent = '3 ngón: I Love You';
             leftHandEl.className = 'hand-status active love';
+        } else if (state.mode === 4) {
+            leftHandEl.textContent = '4 ngón: Awesome';
+            leftHandEl.className = 'hand-status active purple';
+        } else if (state.mode === 5) {
+            leftHandEl.textContent = '5 ngón: Welcome';
+            leftHandEl.className = 'hand-status active green';
         } else {
             leftHandEl.textContent = 'Đang chờ...';
             leftHandEl.className = 'hand-status';

@@ -112,13 +112,27 @@ export class HandTracker {
 
     processLeftHand(landmarks) {
         let fingers = 0;
+        // Thumb: for left hand, when thumb is extended, tip (4) should be to the right of IP (3)
+        // Check both x position and distance from MCP (2) for better accuracy
+        const thumbTip = landmarks[4];
+        const thumbIP = landmarks[3];
+        const thumbMCP = landmarks[2];
+        const thumbExtended = thumbTip.x > thumbIP.x && 
+                              Math.sqrt(Math.pow(thumbTip.x - thumbMCP.x, 2) + Math.pow(thumbTip.y - thumbMCP.y, 2)) > 
+                              Math.sqrt(Math.pow(thumbIP.x - thumbMCP.x, 2) + Math.pow(thumbIP.y - thumbMCP.y, 2));
+        if (thumbExtended) fingers++;
+        
+        // Index finger: tip (8) should be above PIP (6) when extended
         if (landmarks[8].y < landmarks[6].y) fingers++;
+        // Middle finger: tip (12) should be above PIP (10) when extended
         if (landmarks[12].y < landmarks[10].y) fingers++;
+        // Ring finger: tip (16) should be above PIP (14) when extended
         if (landmarks[16].y < landmarks[14].y) fingers++;
+        // Pinky finger: tip (20) should be above PIP (18) when extended
         if (landmarks[20].y < landmarks[18].y) fingers++;
 
         // Only update if mode changed to avoid unnecessary text regeneration
-        if (fingers >= 1 && fingers <= 3 && this.interactionState.mode !== fingers) {
+        if (fingers >= 1 && fingers <= 5 && this.interactionState.mode !== fingers) {
             this.interactionState.mode = fingers;
         }
     }

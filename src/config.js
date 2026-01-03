@@ -86,6 +86,18 @@ export function createThemes() {
             color1: new THREE.Color(0xff0055), 
             color2: new THREE.Color(0xffbbdd),
             text: 'I Love You'
+        },
+        4: { 
+            name: 'Purple',
+            color1: new THREE.Color(0xaa00ff), 
+            color2: new THREE.Color(0xff00aa),
+            text: 'Awesome'
+        },
+        5: { 
+            name: 'Green',
+            color1: new THREE.Color(0x00ff88), 
+            color2: new THREE.Color(0x88ff00),
+            text: 'Welcome'
         }
     };
 }
