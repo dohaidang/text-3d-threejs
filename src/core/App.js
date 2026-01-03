@@ -127,5 +127,12 @@ export class App {
             avgFrameTime: this.performanceMonitor.getAverageFrameTime()
         };
     }
+
+    getInteractionState() {
+        if (this.handTracker) {
+            return this.handTracker.getInteractionState();
+        }
+        return null;
+    }
 }
 

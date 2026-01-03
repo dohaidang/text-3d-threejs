@@ -132,14 +132,44 @@ export class HandTracker {
         const y = -(landmarks[9].y * height - height / 2);
         this.interactionState.rightHandPos.set(x, y, 0);
 
-        // Detect hand action (fist vs open) - improved detection
-        const tip8 = landmarks[8];
-        const tip12 = landmarks[12];
-        const tip16 = landmarks[16];
-        const tip20 = landmarks[20];
+        // Improved fist detection using finger curl analysis
+        // MediaPipe landmarks: 8=Index tip, 12=Middle tip, 16=Ring tip, 20=Pinky tip
+        // PIP joints: 6=Index PIP, 10=Middle PIP, 14=Ring PIP, 18=Pinky PIP
+        const tip8 = landmarks[8];   // Index tip
+        const tip12 = landmarks[12]; // Middle tip
+        const tip16 = landmarks[16];  // Ring tip
+        const tip20 = landmarks[20]; // Pinky tip
+        const pip6 = landmarks[6];   // Index PIP
+        const pip10 = landmarks[10]; // Middle PIP
+        const pip14 = landmarks[14]; // Ring PIP
+        const pip18 = landmarks[18]; // Pinky PIP
         const wrist = landmarks[0];
         
-        // Calculate distance from multiple fingertips to wrist for better accuracy
+        // Check if fingers are curled by comparing tip Y position with PIP Y position
+        // For a fist, tips should be below (higher Y value) or close to PIP joints
+        let curledFingers = 0;
+        
+        // Index finger: tip should be below PIP when curled
+        if (tip8.y > pip6.y) {
+            curledFingers++;
+        }
+        
+        // Middle finger: tip should be below PIP when curled
+        if (tip12.y > pip10.y) {
+            curledFingers++;
+        }
+        
+        // Ring finger: tip should be below PIP when curled
+        if (tip16.y > pip14.y) {
+            curledFingers++;
+        }
+        
+        // Pinky finger: tip should be below PIP when curled
+        if (tip20.y > pip18.y) {
+            curledFingers++;
+        }
+        
+        // Calculate distance from fingertips to wrist as secondary check
         const dist8 = Math.sqrt(
             Math.pow(tip8.x - wrist.x, 2) + 
             Math.pow(tip8.y - wrist.y, 2)
@@ -157,13 +187,39 @@ export class HandTracker {
             Math.pow(tip20.y - wrist.y, 2)
         );
         
-        // Average distance for more stable detection
         const avgDist = (dist8 + dist12 + dist16 + dist20) / 4;
-
-        // Detect action with improved thresholds - immediate response
-        if (avgDist < CONFIG.interaction.fistThreshold) {
+        
+        // Check if fingertips are close to their PIP joints (another sign of fist)
+        const distTipToPip8 = Math.sqrt(
+            Math.pow(tip8.x - pip6.x, 2) + 
+            Math.pow(tip8.y - pip6.y, 2)
+        );
+        const distTipToPip12 = Math.sqrt(
+            Math.pow(tip12.x - pip10.x, 2) + 
+            Math.pow(tip12.y - pip10.y, 2)
+        );
+        const distTipToPip16 = Math.sqrt(
+            Math.pow(tip16.x - pip14.x, 2) + 
+            Math.pow(tip16.y - pip14.y, 2)
+        );
+        const distTipToPip20 = Math.sqrt(
+            Math.pow(tip20.x - pip18.x, 2) + 
+            Math.pow(tip20.y - pip18.y, 2)
+        );
+        
+        const avgTipToPipDist = (distTipToPip8 + distTipToPip12 + distTipToPip16 + distTipToPip20) / 4;
+        
+        // Fist detection: at least 3 fingers curled AND fingertips close to PIP joints
+        // OR average distance to wrist is very small
+        const isFist = (curledFingers >= 3 && avgTipToPipDist < 0.08) || avgDist < CONFIG.interaction.fistThreshold;
+        
+        // Open hand: most fingers extended AND average distance to wrist is large
+        const isOpen = curledFingers <= 1 && avgDist > CONFIG.interaction.openThreshold;
+        
+        // Detect action with improved accuracy
+        if (isFist) {
             this.interactionState.rightHandAction = 'fist';
-        } else if (avgDist > CONFIG.interaction.openThreshold) {
+        } else if (isOpen) {
             this.interactionState.rightHandAction = 'open';
         } else {
             this.interactionState.rightHandAction = 'neutral';
